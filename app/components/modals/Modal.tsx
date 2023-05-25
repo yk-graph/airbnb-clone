@@ -2,7 +2,7 @@
 
 import { FC, ReactElement, useCallback, useEffect, useState } from 'react'
 import { IoMdClose } from 'react-icons/io'
-import Button from '../Button'
+import Button from '@/components/Button'
 
 interface Props {
   isOpen?: boolean

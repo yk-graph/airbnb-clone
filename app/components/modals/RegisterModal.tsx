@@ -11,7 +11,7 @@ import Input from '@/components/inputs/Input'
 import { AiFillGithub } from 'react-icons/ai'
 import { FcGoogle } from 'react-icons/fc'
 import { toast } from 'react-hot-toast'
-import Button from '../Button'
+import Button from '@/components/Button'
 
 export const RegisterModal = () => {
   const { isOpen, onOpen, onClose } = useRegisterModal()
