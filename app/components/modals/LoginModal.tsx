@@ -1,21 +1,22 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
+import { signIn } from 'next-auth/react' // ログインする際に使うnext-authのメソッド
 import { useRouter } from 'next/navigation'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import axios from 'axios'
-import { signIn } from 'next-auth/react'
+import { toast } from 'react-hot-toast'
 
-import useLoginModal from '@/hooks/useLoginModal'
-import useRegisterModal from '@/hooks/useRegisterModal'
-import Modal from '@/components/modals//Modal'
+// components
+import Button from '@/components/Button'
 import Heading from '@/components/Heading'
 import Input from '@/components/inputs/Input'
+import Modal from '@/components/modals//Modal'
+import useLoginModal from '@/hooks/useLoginModal'
+import useRegisterModal from '@/hooks/useRegisterModal'
 
+// icons
 import { AiFillGithub } from 'react-icons/ai'
 import { FcGoogle } from 'react-icons/fc'
-import { toast } from 'react-hot-toast'
-import Button from '@/components/Button'
 
 const LoginModal = () => {
   const router = useRouter()
@@ -37,12 +38,14 @@ const LoginModal = () => {
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true)
 
+    // next-authでsignInを使う場合、第一引数に使用するproviders名,第二引数に渡すデータの情報を指定
     signIn('credentials', {
       ...data,
       redirect: false,
     }).then((callback) => {
       setIsLoading(false)
 
+      // callbackにnext-authのSignInResponseの返却値でokかerrorが渡ってくる
       if (callback?.ok) {
         toast.success('Logged In')
         router.refresh()

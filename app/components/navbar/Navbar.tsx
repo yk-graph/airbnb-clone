@@ -1,6 +1,9 @@
-import { FC } from 'react'
-import { User } from '@prisma/client'
+'use client'
 
+import { FC } from 'react'
+import { User } from '@prisma/client' // prismaの機能で、schema.prismaで定義したスキーマファイルの内容から型定義を自動で行ってくれる
+
+// components
 import Container from '@/components/Container'
 import Logo from '@/components/navbar/Logo'
 import Search from '@/components/navbar/Search'

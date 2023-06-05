@@ -1,17 +1,20 @@
 'use client'
 
-import { useCallback, useState } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import { useState } from 'react'
 import axios from 'axios'
-import useRegisterModal from '@/hooks/useRegisterModal'
-import Modal from '@/components/modals//Modal'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import { toast } from 'react-hot-toast'
+
+// components
+import Button from '@/components/Button'
 import Heading from '@/components/Heading'
 import Input from '@/components/inputs/Input'
+import Modal from '@/components/modals//Modal'
+import useRegisterModal from '@/hooks/useRegisterModal'
 
+// icons
 import { AiFillGithub } from 'react-icons/ai'
 import { FcGoogle } from 'react-icons/fc'
-import { toast } from 'react-hot-toast'
-import Button from '@/components/Button'
 
 const RegisterModal = () => {
   const { isOpen, onOpen, onClose } = useRegisterModal()

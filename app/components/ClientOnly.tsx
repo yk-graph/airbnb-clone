@@ -1,6 +1,5 @@
 /*
-  Hydration Errorを防ぐために
-  コンポーネント全体をラップする
+  Hydration Errorを防ぐためにコンポーネント全体をラップする
 */
 'use client'
 
@@ -15,7 +14,7 @@ const ClientOnly: FC<Props> = ({ children }) => {
 
   useEffect(() => {
     setHasMounted(true)
-  }, [])
+  }, [hasMounted])
 
   if (!hasMounted) return null
 
