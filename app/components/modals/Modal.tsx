@@ -1,3 +1,8 @@
+/*
+  Modalのベースとなるコンポーネント
+  モーダル内の表示内容を親コンポーネント(LoginModalやRegisterModal)から渡ってくる
+*/
+
 'use client'
 
 import { FC, ReactElement, useCallback, useEffect, useState } from 'react'
@@ -29,7 +34,7 @@ const Modal: FC<Props> = ({
   secondaryAction,
   secondaryActionLabel,
 }) => {
-  const [showModal, setShowModal] = useState(isOpen)
+  const [showModal, setShowModal] = useState(isOpen) // Modalの表示・非表示を制御する変数
 
   useEffect(() => {
     setShowModal(isOpen)
