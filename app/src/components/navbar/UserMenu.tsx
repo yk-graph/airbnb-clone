@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation'
 import Avatar from '@/components/Avatar'
 import MenuItem from './MenuItem'
 // import useLoginModal from '@/hooks/useLoginModal'
-// import useRegisterModal from '@/hooks/useRegisterModal'
+import useRegisterModal from '@/hooks/useRegisterModal'
 
 // icons
 import { AiOutlineMenu } from 'react-icons/ai'
@@ -22,7 +22,7 @@ import { AiOutlineMenu } from 'react-icons/ai'
 const UserMenu: FC = () => {
   const router = useRouter()
   // const loginModal = useLoginModal()
-  // const registerModal = useRegisterModal()
+  const registerModal = useRegisterModal()
   const [isOpen, setIsOpen] = useState(false)
 
   const toggleIsOpen = useCallback(() => {
@@ -76,10 +76,9 @@ const UserMenu: FC = () => {
               </>
             ) : (
               <> */}
-            {/* <MenuItem label="Login" onClick={loginModal.onOpen} />
-                <MenuItem label="Sign up" onClick={registerModal.onOpen} /> */}
+            {/* <MenuItem label="Login" onClick={loginModal.onOpen} /> */}
             <MenuItem label="Login" onClick={() => {}} />
-            <MenuItem label="Sign up" onClick={() => {}} />
+            <MenuItem label="Sign up" onClick={registerModal.onOpen} />
             {/* </>
             )} */}
           </div>
