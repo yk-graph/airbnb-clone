@@ -1,27 +1,27 @@
 'use client'
 
 import { FC, useCallback, useState } from 'react'
+import { User } from '@prisma/client'
 // import { SafeUser } from '@/types'
-// import { signOut } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
 // components
 import Avatar from '@/components/Avatar'
 import MenuItem from './MenuItem'
-// import useLoginModal from '@/hooks/useLoginModal'
+import useLoginModal from '@/hooks/useLoginModal'
 import useRegisterModal from '@/hooks/useRegisterModal'
 
 // icons
 import { AiOutlineMenu } from 'react-icons/ai'
 
-// interface Props {
-//   currentUser?: SafeUser | null
-// }
+interface Props {
+  currentUser?: User | null
+}
 
-// const UserMenu: FC<Props> = ({ currentUser }) => {
-const UserMenu: FC = () => {
+const UserMenu: FC<Props> = ({ currentUser }) => {
   const router = useRouter()
-  // const loginModal = useLoginModal()
+  const loginModal = useLoginModal()
   const registerModal = useRegisterModal()
   const [isOpen, setIsOpen] = useState(false)
 
@@ -52,7 +52,7 @@ const UserMenu: FC = () => {
       {isOpen && (
         <div className="absolute rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm">
           <div className="flex flex-col cursor-pointer">
-            {/* {currentUser ? (
+            {currentUser ? (
               <>
                 <MenuItem
                   label="My trips"
@@ -75,12 +75,11 @@ const UserMenu: FC = () => {
                 <MenuItem label="Logout" onClick={() => signOut()} />
               </>
             ) : (
-              <> */}
-            {/* <MenuItem label="Login" onClick={loginModal.onOpen} /> */}
-            <MenuItem label="Login" onClick={() => {}} />
-            <MenuItem label="Sign up" onClick={registerModal.onOpen} />
-            {/* </>
-            )} */}
+              <>
+                <MenuItem label="Login" onClick={loginModal.onOpen} />
+                <MenuItem label="Sign up" onClick={registerModal.onOpen} />
+              </>
+            )}
           </div>
         </div>
       )}

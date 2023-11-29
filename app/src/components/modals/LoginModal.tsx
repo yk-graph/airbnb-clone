@@ -1,30 +1,28 @@
 /* 
   [Tips] react-hook-formを使用してフォームの入力値を管理する方法
   新規登録ページの入力値の管理・APIへのPOSTリクエストはこのコンポーネントで管理
-  */
+*/
 
 'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import axios from 'axios'
 import { signIn } from 'next-auth/react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 
 import { AiFillGithub } from 'react-icons/ai'
 import { FcGoogle } from 'react-icons/fc'
 
+import useLoginModal from '@/hooks/useLoginModal'
 import Button from '@/components/Button'
 import Heading from '@/components/Heading'
 import Input from '@/components/inputs/Input'
-import useRegisterModal from '@/hooks/useRegisterModal'
 import Modal from './Modal'
 
-const RegisterModal = () => {
+const LoginModal = () => {
   const router = useRouter()
-
-  const registerModal = useRegisterModal()
+  const loginModal = useLoginModal()
   const [isLoading, setIsLoading] = useState(false) // loading状態がtrueの時はボタンをdisabledにする
 
   // [Tips] react-hook-form の useForm を使用デフォルトの値を設定する方法
@@ -34,7 +32,6 @@ const RegisterModal = () => {
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      name: '',
       email: '',
       password: '',
     },
@@ -44,42 +41,29 @@ const RegisterModal = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true)
 
-    await axios
-      .post('/api/register', data)
-      // [Tips] 新規登録が成功したらログインする方法
-      .then(() => {
-        return signIn('credentials', {
-          ...data,
-          redirect: false,
-        })
-      })
-      .then((callback) => {
-        if (callback?.ok) {
-          toast.success('Registered!')
-          router.refresh() // [Tips] サーバーからデータをfetchし直すテクニック
-          registerModal.onClose()
-        }
-      })
-      .catch((error) => {
-        toast.error('Something went wrong!')
-      })
-      .finally(() => {
+    // [Tips] next-authでsignInを使う場合、第一引数に使用するproviders名,第二引数に渡すデータの情報を指定
+    await signIn('credentials', {
+      ...data,
+      redirect: false,
+    }).then((callbask) => {
+      // [Tips] next-authのsignInメソッドの返り値を使ったエラーハンドリング -> callbackにnext-authのSignInResponseの返却値でokかerrorが渡ってくる
+      if (callbask?.ok) {
         setIsLoading(false)
-      })
+        toast.success('Logged in')
+        router.refresh() // [Tips] サーバーからデータをfetchし直すテクニック
+        loginModal.onClose()
+      }
+
+      if (callbask?.error) {
+        toast.error(callbask.error)
+      }
+    })
   }
 
   // [Tips] return外で定義した変数をJSX内で使用する方法
   const bodyContent = (
     <div className="flex flex-col gap-4">
-      <Heading title="Welcom to Airbnb" subtitle="Create an account!" />
-      <Input
-        id="name"
-        label="Name"
-        register={register}
-        errors={errors}
-        disabled={isLoading}
-        required
-      />
+      <Heading title="Welcom Back" subtitle="Login to your account!" />
       <Input
         id="email"
         label="Email"
@@ -119,7 +103,7 @@ const RegisterModal = () => {
         <p>
           Already have an account?
           <span
-            onClick={registerModal.onClose}
+            onClick={loginModal.onClose}
             className="text-neutral-800 cursor-pointer hover:underline"
           >
             {' '}
@@ -133,15 +117,15 @@ const RegisterModal = () => {
   return (
     <Modal
       disabled={isLoading}
-      title="Register"
+      title="Login"
       body={bodyContent}
       footer={footerContent}
       actionLabel="Continue"
-      isOpen={registerModal.isOpen} // モーダルが開く関数はzustandのstateで管理
-      onClose={registerModal.onClose} // モーダルを閉じる関数はzustandのstateで管理
+      isOpen={loginModal.isOpen} // モーダルが開く関数はzustandのstateで管理
+      onClose={loginModal.onClose} // モーダルを閉じる関数はzustandのstateで管理
       onSubmit={handleSubmit(onSubmit)} // [Tips] react-hook-formを使用した時のsubmitの処理を呼び出す方法 -> react-hook-formの SubmitHandler関数 の引数に定義したonSubmit関数を渡す
     />
   )
 }
 
-export default RegisterModal
+export default LoginModal
