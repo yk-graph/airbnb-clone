@@ -5,7 +5,7 @@
 
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import { signIn } from 'next-auth/react'
@@ -18,13 +18,15 @@ import { FcGoogle } from 'react-icons/fc'
 import Button from '@/components/Button'
 import Heading from '@/components/Heading'
 import Input from '@/components/inputs/Input'
+import useLoginModal from '@/hooks/useLoginModal'
 import useRegisterModal from '@/hooks/useRegisterModal'
 import Modal from './Modal'
 
 const RegisterModal = () => {
   const router = useRouter()
-
+  const loginModal = useLoginModal()
   const registerModal = useRegisterModal()
+
   const [isLoading, setIsLoading] = useState(false) // loading状態がtrueの時はボタンをdisabledにする
 
   // [Tips] react-hook-form の useForm を使用デフォルトの値を設定する方法
@@ -72,6 +74,11 @@ const RegisterModal = () => {
         setIsLoading(false)
       })
   }
+
+  const toggle = useCallback(() => {
+    registerModal.onClose()
+    loginModal.onOpen()
+  }, [loginModal, registerModal])
 
   // [Tips] return外で定義した変数をJSX内で使用する方法
   const bodyContent = (
@@ -124,7 +131,7 @@ const RegisterModal = () => {
         <p>
           Already have an account?
           <span
-            onClick={registerModal.onClose}
+            onClick={toggle}
             className="text-neutral-800 cursor-pointer hover:underline"
           >
             {' '}
@@ -137,7 +144,6 @@ const RegisterModal = () => {
 
   return (
     <Modal
-      disabled={isLoading}
       title="Register"
       body={bodyContent}
       footer={footerContent}
@@ -145,6 +151,7 @@ const RegisterModal = () => {
       isOpen={registerModal.isOpen} // モーダルが開く関数はzustandのstateで管理
       onClose={registerModal.onClose} // モーダルを閉じる関数はzustandのstateで管理
       onSubmit={handleSubmit(onSubmit)} // [Tips] react-hook-formを使用した時のsubmitの処理を呼び出す方法 -> react-hook-formの SubmitHandler関数 の引数に定義したonSubmit関数を渡す
+      disabled={isLoading}
     />
   )
 }

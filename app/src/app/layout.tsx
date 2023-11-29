@@ -5,6 +5,7 @@ import './globals.css'
 import getCurrentUser from '@/actions/getCurrentUser'
 import LoginModal from '@/components/modals/LoginModal'
 import RegisterModal from '@/components/modals/RegisterModal'
+import RentModal from '@/components/modals/RentModal'
 import Navbar from '@/components/navbar/Navbar'
 import ToasterProvider from '@/providers/ToasterProvider'
 
@@ -29,6 +30,7 @@ export default async function RootLayout({
         <ToasterProvider />
         <RegisterModal />
         <LoginModal />
+        <RentModal />
         <Navbar currentUser={currentUser} />
         {children}
       </body>
