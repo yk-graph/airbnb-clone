@@ -10,12 +10,22 @@ export async function POST(req: Request) {
     email: string
     password: string
   }
-  console.log(body)
 
   const { name, email, password } = body
 
   if (!name || !email || !password) {
     return new NextResponse('required error', { status: 400 })
+  }
+
+  // [Tips] ユーザーが既に存在するかどうかを確認する方法
+  const userExists = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  })
+
+  if (userExists) {
+    return new NextResponse('user exists', { status: 409 })
   }
 
   // [Tips] パスワードをハッシュ化する方法

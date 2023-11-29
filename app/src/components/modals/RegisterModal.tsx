@@ -61,7 +61,12 @@ const RegisterModal = () => {
         }
       })
       .catch((error) => {
-        toast.error('Something went wrong!')
+        // [Tips] throw されたメッセージがある場合は表示させる制御方法
+        if (error.response.data) {
+          toast.error(error.response.data)
+        } else {
+          toast.error('Something went wrong!')
+        }
       })
       .finally(() => {
         setIsLoading(false)
@@ -107,13 +112,13 @@ const RegisterModal = () => {
         outline
         label="Continue with Google"
         icon={FcGoogle}
-        onClick={() => {}}
+        onClick={() => signIn('google')}
       />
       <Button
         outline
         label="Continue with Github"
         icon={AiFillGithub}
-        onClick={() => {}}
+        onClick={() => signIn('github')}
       />
       <div className="text-neutral-500 text-center mt-4 font-light">
         <p>

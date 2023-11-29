@@ -45,19 +45,22 @@ const LoginModal = () => {
     await signIn('credentials', {
       ...data,
       redirect: false,
-    }).then((callbask) => {
-      // [Tips] next-authのsignInメソッドの返り値を使ったエラーハンドリング -> callbackにnext-authのSignInResponseの返却値でokかerrorが渡ってくる
-      if (callbask?.ok) {
-        setIsLoading(false)
-        toast.success('Logged in')
-        router.refresh() // [Tips] サーバーからデータをfetchし直すテクニック
-        loginModal.onClose()
-      }
-
-      if (callbask?.error) {
-        toast.error(callbask.error)
-      }
     })
+      .then((callbask) => {
+        // [Tips] next-authのsignInメソッドの返り値を使ったエラーハンドリング -> callbackにnext-authのSignInResponseの返却値でokかerrorが渡ってくる
+        if (callbask?.ok) {
+          toast.success('Logged in')
+          router.refresh() // [Tips] サーバーからデータをfetchし直すテクニック
+          loginModal.onClose()
+        }
+
+        if (callbask?.error) {
+          toast.error(callbask.error)
+        }
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   // [Tips] return外で定義した変数をJSX内で使用する方法
@@ -91,13 +94,13 @@ const LoginModal = () => {
         outline
         label="Continue with Google"
         icon={FcGoogle}
-        onClick={() => {}}
+        onClick={() => signIn('google')}
       />
       <Button
         outline
         label="Continue with Github"
         icon={AiFillGithub}
-        onClick={() => {}}
+        onClick={() => signIn('github')}
       />
       <div className="text-neutral-500 text-center mt-4 font-light">
         <p>
