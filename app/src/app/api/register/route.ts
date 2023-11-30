@@ -5,12 +5,7 @@ import prisma from '@/libs/prismadb'
 
 export async function POST(req: Request) {
   // [Tips] リクエストボディからemailとpasswordを取得する方法
-  const body = (await req.json()) as {
-    name: string
-    email: string
-    password: string
-  }
-
+  const body = await req.json()
   const { name, email, password } = body
 
   if (!name || !email || !password) {

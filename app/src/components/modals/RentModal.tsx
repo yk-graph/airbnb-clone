@@ -7,20 +7,21 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
-// import axios from 'axios'
+import dynamic from 'next/dynamic'
+import axios from 'axios'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-// import toast from 'react-hot-toast'
+import toast from 'react-hot-toast'
 
 import Heading from '@/components/Heading'
 import CategoryInput from '@/components/inputs/CategoryInput'
 import Counter from '@/components/inputs/Counter'
 import CountrySelect from '@/components/inputs/CountrySelect'
+import ImageUpload from '@/components/inputs/ImageUpload'
+import Input from '@/components/inputs/Input'
 import { categories } from '@/components/navbar/Categories'
 import useRentModal from '@/hooks/useRentModal'
 import Modal from './Modal'
-import ImageUpload from '@/components/inputs/ImageUpload'
 
 // [Tips] ステップ式入力フォームの現在のステップを管理するためにenumを使う方法（これによりステップが 先に進む 前に戻る の制御を数値で行うことができる）
 enum STEPS {
@@ -107,23 +108,23 @@ const RentModal = () => {
       return onNext()
     }
 
-    // setIsLoading(true)
+    setIsLoading(true)
 
-    // await axios
-    //   .post('/api/listings', data)
-    //   .then(() => {
-    //     toast.success('Listing created!')
-    //     router.refresh()
-    //     reset()
-    //     setStep(STEPS.CATEGORY)
-    //     rentModal.onClose()
-    //   })
-    //   .catch(() => {
-    //     toast.error('Something went wrong.')
-    //   })
-    //   .finally(() => {
-    //     setIsLoading(false)
-    //   })
+    await axios
+      .post('/api/listings', data)
+      .then(() => {
+        toast.success('Listing created!')
+        router.refresh()
+        reset() // [Tips] resetを使ってフォームの値をリセットする方法
+        setStep(STEPS.CATEGORY)
+        rentModal.onClose()
+      })
+      .catch(() => {
+        toast.error('Something went wrong.')
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   // [Tips] ステップに応じてボタンのラベルを変更するためのテクニック
@@ -230,6 +231,57 @@ const RentModal = () => {
         <ImageUpload
           onChange={(value) => setCustomValue('imageSrc', value)}
           value={imageSrc}
+        />
+      </div>
+    )
+  }
+
+  // descriptionの入力画面（title, description）
+  if (step === STEPS.DESCRIPTION) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="How would you describe your place?"
+          subtitle="Short and sweet works best!"
+        />
+        <Input
+          id="title"
+          label="Title"
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          required
+        />
+        <hr />
+        <Input
+          id="description"
+          label="Description"
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          required
+        />
+      </div>
+    )
+  }
+
+  // priceの入力画面
+  if (step === STEPS.PRICE) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Now, set your price"
+          subtitle="How much do you charge per night?"
+        />
+        <Input
+          id="price"
+          label="Price"
+          formatPrice
+          type="number"
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          required
         />
       </div>
     )
