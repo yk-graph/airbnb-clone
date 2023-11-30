@@ -1,24 +1,26 @@
 /*
   ログイン済みのユーザーが物件を登録するためのモーダル
-  [Tips] 入力フォームをステップ式で表示・入力データを保持するためのテクニック
+  [Tips] 入力フォームをステップ式で表示・入力データを保持するために、react-hook-formの watch を使って入力された値を監視するテクニック
   [Tips] next/dynamic の機能を使ってSSRを回避したライブラリのimportを実現するテクニック
 */
 
 'use client'
 
 import { useMemo, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
+import { useRouter } from 'next/navigation'
 // import axios from 'axios'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 // import toast from 'react-hot-toast'
 
 import Heading from '@/components/Heading'
 import CategoryInput from '@/components/inputs/CategoryInput'
+import Counter from '@/components/inputs/Counter'
 import CountrySelect from '@/components/inputs/CountrySelect'
 import { categories } from '@/components/navbar/Categories'
 import useRentModal from '@/hooks/useRentModal'
 import Modal from './Modal'
+import ImageUpload from '@/components/inputs/ImageUpload'
 
 // [Tips] ステップ式入力フォームの現在のステップを管理するためにenumを使う方法（これによりステップが 先に進む 前に戻る の制御を数値で行うことができる）
 enum STEPS {
@@ -168,6 +170,7 @@ const RentModal = () => {
     </div>
   )
 
+  // locationの入力画面
   if (step === STEPS.LOCATION) {
     bodyContent = (
       <div className="flex flex-col gap-8">
@@ -180,6 +183,54 @@ const RentModal = () => {
           onChange={(value) => setCustomValue('location', value)} // セレクトボックスが変更されたら location というキーに CountrySelectValue の値が入る
         />
         <Map center={location?.latlng} />
+      </div>
+    )
+  }
+
+  // infoの入力画面（guestCount, roomCount, bathroomCount）
+  if (step === STEPS.INFO) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Share some basics about your place"
+          subtitle="What amenitis do you have?"
+        />
+        <Counter
+          onChange={(value) => setCustomValue('guestCount', value)}
+          value={guestCount}
+          title="Guests"
+          subtitle="How many guests do you allow?"
+        />
+        <hr />
+        <Counter
+          onChange={(value) => setCustomValue('roomCount', value)}
+          value={roomCount}
+          title="Rooms"
+          subtitle="How many rooms do you have?"
+        />
+        <hr />
+        <Counter
+          onChange={(value) => setCustomValue('bathroomCount', value)}
+          value={bathroomCount}
+          title="Bathrooms"
+          subtitle="How many bathrooms do you have?"
+        />
+      </div>
+    )
+  }
+
+  // imagesの入力画面
+  if (step === STEPS.IMAGES) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Add a photo of your place"
+          subtitle="Show guests what your place looks like!"
+        />
+        <ImageUpload
+          onChange={(value) => setCustomValue('imageSrc', value)}
+          value={imageSrc}
+        />
       </div>
     )
   }
