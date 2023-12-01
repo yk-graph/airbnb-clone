@@ -29,12 +29,20 @@ export default async function getCurrentUser() {
       return null
     }
 
+    // ログインしているユーザーに紐づくFavoriteのデータを取得する
+    const favorites = await prisma.favorite.findMany({
+      where: {
+        userId: currentUser.id,
+      },
+    })
+
     // [Tips] Data型の値を日本時間の文字列に変換する方法
     return {
       ...currentUser,
       createdAt: currentUser.createdAt.toLocaleString(),
       updatedAt: currentUser.updatedAt.toLocaleString(),
       emailVerified: currentUser.emailVerified?.toLocaleString() || null,
+      favorites,
     }
   } catch (error: any) {
     return null

@@ -24,7 +24,7 @@
   type ThreeDimensionalPoint = TwoDimensionalPoint & Z ---> { x: number; y: number; z: number; } になる
 */
 
-import { User } from '@prisma/client'
+import { Favorite, User } from '@prisma/client'
 
 export type SafeUser = Omit<
   User,
@@ -33,4 +33,5 @@ export type SafeUser = Omit<
   createdAt: string
   updatedAt: string
   emailVerified: string | null
+  favorites: Favorite[] | null
 }
