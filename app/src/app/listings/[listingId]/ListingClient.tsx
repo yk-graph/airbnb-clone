@@ -7,7 +7,6 @@
 
 import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Reservation } from '@prisma/client'
 import { differenceInDays, eachDayOfInterval } from 'date-fns'
 import { Range } from 'react-date-range'
 import axios from 'axios'
@@ -19,7 +18,7 @@ import ListingInfo from '@/components/listings/ListingInfo'
 import ListingReservation from '@/components/listings/ListingReservation'
 import { categories } from '@/components/navbar/Categories'
 import useLoginModal from '@/hooks/useLoginModal'
-import { SafeListing, SafeUser } from '@/types'
+import { SafeListing, SafeReservation, SafeUser } from '@/types'
 
 const initialDateRange = {
   startDate: new Date(),
@@ -29,7 +28,7 @@ const initialDateRange = {
 
 // [Tips] 既存のTSの型定義から型を追加して新たに型を定義するテクニック | & (インターセクション型 (intersection type)) を使う
 interface ListingClientProps {
-  reservations?: Reservation[]
+  reservations?: SafeReservation[]
   listing: SafeListing & {
     user: SafeUser
   }
@@ -47,6 +46,8 @@ const ListingClient: FC<ListingClientProps> = ({
   const [isLoading, setIsLoading] = useState(false)
   const [totalPrice, setTotalPrice] = useState(listing.price)
   const [dateRange, setDateRange] = useState<Range>(initialDateRange)
+
+  console.log('reservations --->', reservations)
 
   // 宿泊の日数と宿泊料金を計算してtotalPriceに格納する
   useEffect(() => {
@@ -96,6 +97,11 @@ const ListingClient: FC<ListingClientProps> = ({
 
     // [Tips] eachDayOfInterval を使って、日付の範囲を指定して配列を生成する方法（https://tech.mof-mof.co.jp/blog/date-fns/）
     reservations.forEach((reservation) => {
+      console.log(
+        'new Date(reservation.startDate) --->',
+        new Date(reservation.startDate)
+      )
+
       const range = eachDayOfInterval({
         start: new Date(reservation.startDate),
         end: new Date(reservation.endDate),
