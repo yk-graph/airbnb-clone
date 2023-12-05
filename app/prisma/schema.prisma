@@ -59,6 +59,7 @@ model Listing {
   locationValue      String
   price              Int
   reservations       Reservation[]
+  favorites          Favorite[]
 
   userId             String
   user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -85,4 +86,7 @@ model Favorite {
 
   userId             String
   user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  listingId          String
+  listing            Listing   @relation(fields: [listingId], references: [id], onDelete: Cascade)
 }

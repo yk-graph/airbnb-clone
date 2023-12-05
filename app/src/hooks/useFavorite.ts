@@ -22,7 +22,7 @@ const useFavorite = ({ listingId, currentUser }: IUseFavorite) => {
   const hasFavorited = useMemo(() => {
     const list = currentUser?.favorites || []
 
-    return list.some((item) => item.id === listingId)
+    return list.some((item) => item.listingId === listingId)
   }, [currentUser, listingId])
 
   // お気に入り登録・解除の処理
