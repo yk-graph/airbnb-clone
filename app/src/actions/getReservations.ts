@@ -6,7 +6,7 @@ import prismadb from '@/libs/prismadb'
 export default async function getReservations(params: {
   listingId?: string // -> listingId（宿泊施設のID）に紐づく予約情報を取得する
   userId?: string // -> userId（宿泊者のユーザーのID）に紐づく予約情報を取得する
-  authorId?: string
+  authorId?: string // -> Reservation から見ると親に当たる Listing の中から、宿泊施設の提供者のユーザーIDに紐づく予約情報を取得する
 }) {
   try {
     const { listingId, userId, authorId } = params
@@ -25,6 +25,7 @@ export default async function getReservations(params: {
       query.userId = userId
     } // queryの中身は { userId: userId } となる
 
+    // [Tips] belongs_to でリレーションが組まれてるテーブルのデータを取得する場合のクエリの指定方法
     if (authorId) {
       query.listing = { userId: authorId }
     } // queryの中身は { listing: { userId: authorId } } となる

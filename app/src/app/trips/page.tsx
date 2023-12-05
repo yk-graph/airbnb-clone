@@ -1,3 +1,8 @@
+/*
+  自分自身が予約した旅行の一覧を表示するページ
+  ※自身が提供した宿泊施設（Listings）への予約一覧は /reservations で表示する
+*/
+
 import getCurrentUser from '@/actions/getCurrentUser'
 import getReservations from '@/actions/getReservations'
 import EmptyState from '@/components/EmptyState'
