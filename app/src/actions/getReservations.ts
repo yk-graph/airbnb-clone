@@ -1,6 +1,6 @@
 // 該当のListingIdから全ての予約情報を取得する、もしくは該当のUserIdから全ての予約情報を取得するための処理
 
-import prismadb from '@/libs/prismadb'
+import prisma from '@/libs/prismadb'
 
 // [Tips] 渡ってきたパラメータによってReservationから取得するデータを動的に分岐させるテクニック
 export default async function getReservations(params: {
@@ -30,7 +30,7 @@ export default async function getReservations(params: {
       query.listing = { userId: authorId }
     } // queryの中身は { listing: { userId: authorId } } となる
 
-    const reservations = await prismadb.reservation.findMany({
+    const reservations = await prisma.reservation.findMany({
       where: query,
       include: {
         listing: true,

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import prismadb from '@/libs/prismadb'
+import prisma from '@/libs/prismadb'
 import getCurrentUser from '@/actions/getCurrentUser'
 
 export async function DELETE(
@@ -20,7 +20,7 @@ export async function DELETE(
   }
 
   // [Tips] ORを使ったクエリ | 1つ以上の条件に一致するかどうか（https://qiita.com/koffee0522/items/92be1826f1a150bfe62e）
-  const reservation = await prismadb.reservation.deleteMany({
+  const reservation = await prisma.reservation.deleteMany({
     where: {
       id: reservationId,
       OR: [{ userId: currentUser.id }, { listing: { userId: currentUser.id } }],

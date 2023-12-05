@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import prismadb from '@/libs/prismadb'
+import prisma from '@/libs/prismadb'
 import getCurrentUser from '@/actions/getCurrentUser'
 
 export async function POST(req: Request) {
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
   }
 
   // [Tips] 1 対 N のリレーションが組まれているテーブルのレコードを作成する方法 | data -> テーブル名 -> create { ... }　という形で記述する
-  const listingAndReservation = await prismadb.listing.update({
+  const listingAndReservation = await prisma.listing.update({
     where: { id: listingId },
     data: {
       reservations: {

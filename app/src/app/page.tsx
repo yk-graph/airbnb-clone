@@ -1,15 +1,18 @@
 import getCurrentUser from '@/actions/getCurrentUser'
-import getListings from '@/actions/getListings'
+import getListings, { ListingsParams } from '@/actions/getListings'
 import Container from '@/components/Container'
 import EmptyState from '@/components/EmptyState'
 import ListingCard from '@/components/listings/ListingCard'
-interface HomeProps {
-  params: {}
-}
 
-export default async function Home() {
+// [Tips] サーバーコンポーネントでクエリパラメータを取得する方法 | searchParams を使う
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: ListingsParams
+}) {
   const currentUser = await getCurrentUser()
-  const listings = await getListings()
+  const listings = await getListings(searchParams)
+  // const listings = await getListings()
 
   if (listings.length === 0) {
     return <EmptyState showReset />

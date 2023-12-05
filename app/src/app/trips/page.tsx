@@ -1,6 +1,7 @@
 /*
-  自分自身が予約した旅行の一覧を表示するページ
-  ※自身が提供した宿泊施設（Listings）への予約一覧は /reservations で表示する
+  自分自身が予約した宿泊の一覧を表示するページ
+  ReservationテーブルのuserIdとログインユーザーのIDが一致するレコードを全て取得して表示する
+  ※自身が提供した宿泊施設（Listings）に登録された予約一覧は /reservations で表示する
 */
 
 import getCurrentUser from '@/actions/getCurrentUser'

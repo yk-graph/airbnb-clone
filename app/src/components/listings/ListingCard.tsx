@@ -3,18 +3,17 @@
 import { FC, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { Listing, Reservation } from '@prisma/client'
 import { format } from 'date-fns'
 
 import Button from '@/components/Button'
 import HeartButton from '@/components/HeartButton'
 import useCountries from '@/hooks/useCountries'
-import { SafeUser } from '@/types'
+import { SafeListing, SafeReservation, SafeUser } from '@/types'
 
 // [Tips] イベントが発生した時（onClickが発火した時）に、onAction, actionLabel, actionId を親コンポーネントから受け取るようにすることで動的に処理内容を変更するためのテクニック
 interface ListingCardProps {
-  data: Listing
-  reservation?: Reservation
+  data: SafeListing
+  reservation?: SafeReservation
   disabled?: boolean
   currentUser?: SafeUser | null
   onAction?: (id: string) => void

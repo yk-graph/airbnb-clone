@@ -1,5 +1,5 @@
 /*
-  自身が提供した宿泊施設（Listings）のへの予約一覧を表示するページ
+  自身が提供した宿泊施設（Listings）への予約一覧を表示するページ
 */
 
 import getCurrentUser from '@/actions/getCurrentUser'
@@ -7,7 +7,7 @@ import getReservations from '@/actions/getReservations'
 import EmptyState from '@/components/EmptyState'
 import TripsClient from './ReservationsClient'
 
-const ReservationsPage = async () => {
+export default async function ReservationsPage() {
   const currentUser = await getCurrentUser()
 
   if (!currentUser) {
@@ -28,5 +28,3 @@ const ReservationsPage = async () => {
 
   return <TripsClient reservations={reservations} currentUser={currentUser} />
 }
-
-export default ReservationsPage

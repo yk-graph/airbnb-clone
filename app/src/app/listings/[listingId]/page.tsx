@@ -1,3 +1,7 @@
+/*
+  ログインしたユーザーが登録した宿泊情報の詳細を表示するページ
+*/
+
 import getCurrentUser from '@/actions/getCurrentUser'
 import getListingById from '@/actions/getListingById'
 import getReservations from '@/actions/getReservations'

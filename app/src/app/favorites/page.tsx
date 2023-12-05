@@ -1,9 +1,14 @@
+/*
+  お気に入りに登録したリストを表示するページ
+  FavoriteテーブルのuserIdがログインユーザーのIDと一致するレコードを取得して、そのレコードのlistingIdと一致するListingテーブルのレコードを取得して表示する
+*/
+
 import EmptyState from '@/components/EmptyState'
 import getCurrentUser from '@/actions/getCurrentUser'
 import getFavoriteListings from '@/actions/getFavoriteListings'
 import FavoritesClient from './FavoritesClient'
 
-const ListingPage = async () => {
+export default async function FavoritesPage() {
   const listings = await getFavoriteListings()
   const currentUser = await getCurrentUser()
 
@@ -18,5 +23,3 @@ const ListingPage = async () => {
 
   return <FavoritesClient listings={listings} currentUser={currentUser} />
 }
-
-export default ListingPage
