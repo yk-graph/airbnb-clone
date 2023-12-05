@@ -47,8 +47,6 @@ const ListingClient: FC<ListingClientProps> = ({
   const [totalPrice, setTotalPrice] = useState(listing.price)
   const [dateRange, setDateRange] = useState<Range>(initialDateRange)
 
-  console.log('reservations --->', reservations)
-
   // 宿泊の日数と宿泊料金を計算してtotalPriceに格納する
   useEffect(() => {
     if (dateRange.startDate && dateRange.endDate) {
@@ -80,8 +78,7 @@ const ListingClient: FC<ListingClientProps> = ({
       .then(() => {
         toast.success('Listing Reserved!')
         setDateRange(initialDateRange)
-
-        router.refresh()
+        router.push('/trips')
       })
       .catch(() => {
         toast.error('Something went wrong!')
@@ -97,11 +94,6 @@ const ListingClient: FC<ListingClientProps> = ({
 
     // [Tips] eachDayOfInterval を使って、日付の範囲を指定して配列を生成する方法（https://tech.mof-mof.co.jp/blog/date-fns/）
     reservations.forEach((reservation) => {
-      console.log(
-        'new Date(reservation.startDate) --->',
-        new Date(reservation.startDate)
-      )
-
       const range = eachDayOfInterval({
         start: new Date(reservation.startDate),
         end: new Date(reservation.endDate),

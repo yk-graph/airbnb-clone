@@ -2,14 +2,35 @@
 
 import prismadb from '@/libs/prismadb'
 
-export default async function getReservations(params: { listingId: string }) {
+// [Tips] 渡ってきたパラメータによってReservationから取得するデータを動的に分岐させるテクニック
+export default async function getReservations(params: {
+  listingId?: string // -> listingId（宿泊施設のID）に紐づく予約情報を取得する
+  userId?: string // -> userId（宿泊者のユーザーのID）に紐づく予約情報を取得する
+  authorId?: string
+}) {
   try {
-    const { listingId } = params
+    const { listingId, userId, authorId } = params
+
+    const query: {
+      listingId?: string
+      userId?: string
+      listing?: { userId: string }
+    } = {}
+
+    if (listingId) {
+      query.listingId = listingId
+    } // queryの中身は { listingId: listingId } となる
+
+    if (userId) {
+      query.userId = userId
+    } // queryの中身は { userId: userId } となる
+
+    if (authorId) {
+      query.listing = { userId: authorId }
+    } // queryの中身は { listing: { userId: authorId } } となる
 
     const reservations = await prismadb.reservation.findMany({
-      where: {
-        listingId,
-      },
+      where: query,
       include: {
         listing: true,
       },

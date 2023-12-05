@@ -11,24 +11,25 @@ import HeartButton from '@/components/HeartButton'
 import useCountries from '@/hooks/useCountries'
 import { SafeUser } from '@/types'
 
+// [Tips] イベントが発生した時（onClickが発火した時）に、onAction, actionLabel, actionId を親コンポーネントから受け取るようにすることで動的に処理内容を変更するためのテクニック
 interface ListingCardProps {
   data: Listing
   reservation?: Reservation
-  onAction?: (id: string) => void
   disabled?: boolean
+  currentUser?: SafeUser | null
+  onAction?: (id: string) => void
   actionLabel?: string
   actionId?: string
-  currentUser?: SafeUser | null
 }
 
 const ListingCard: FC<ListingCardProps> = ({
   data,
   reservation,
-  onAction,
   disabled,
+  currentUser,
+  onAction,
   actionLabel,
   actionId = '',
-  currentUser,
 }) => {
   const router = useRouter()
   const { getByValue } = useCountries()
@@ -78,6 +79,7 @@ const ListingCard: FC<ListingCardProps> = ({
           {/* [Tips] NextのImageタグとTailwindを組み合わせてホバー時に画像の縮小サイズが大きくなるアニメーションの実装方法 */}
           <Image
             fill
+            sizes="auto"
             className="object-cover h-full w-full group-hover:scale-110 transition"
             src={data.imageSrc}
             alt="Listing"

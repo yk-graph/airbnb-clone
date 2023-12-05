@@ -11,8 +11,9 @@ const Logo = () => {
       onClick={() => router.push('/')}
       alt="Logo"
       className="hidden md:block cursor-pointer" // [Tips] レスポンシブで表示・非表示を切り替える場合はhiddenクラスを使用する
-      height="100"
-      width="100"
+      height={100}
+      width={100}
+      priority={false}
       src="/images/airbnb.svg"
     />
   )
