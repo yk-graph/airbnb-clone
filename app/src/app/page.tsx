@@ -12,7 +12,6 @@ export default async function Home({
 }) {
   const currentUser = await getCurrentUser()
   const listings = await getListings(searchParams)
-  // const listings = await getListings()
 
   if (listings.length === 0) {
     return <EmptyState showReset />
