@@ -13,20 +13,5 @@ services:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=next-sample-db
 
-  app:
-    build:
-      context: ./app
-      target: runner
-    volumes:
-      - ./app:/app
-    command: npm run dev
-    container_name: airbnb-clone-app
-    ports:
-      - "3000:3000"
-    depends_on:
-      - db
-    environment:
-      NODE_ENV: development
-
 volumes:
   mysql:
