@@ -17,7 +17,6 @@ export default async function PropertiesPage() {
   }
 
   const listings = await getListings({ userId: currentUser.id })
-  // const listings = await getListings()
 
   if (listings.length === 0) {
     return (

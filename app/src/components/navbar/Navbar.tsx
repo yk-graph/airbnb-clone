@@ -1,4 +1,4 @@
-import { FC, Suspense } from 'react'
+import { FC } from 'react'
 
 import Container from '@/components/Container'
 import { SafeUser } from '@/types'
@@ -18,17 +18,12 @@ const Navbar: FC<NavbarProps> = ({ currentUser }) => {
         <Container>
           <div className="flex items-center justify-between gap-3 md:gap-0">
             <Logo />
-            <Search />
+            {/* <Search /> */}
             <UserMenu currentUser={currentUser} />
           </div>
         </Container>
       </div>
-      {/* [Tips] useSearchParamsを使うとページ全体がクライアントに読み込まれてしまうエラーを回避する方法
-      　　        エラー文 -> Entire page deopted into client-side rendering
-      　　        Categoriesコンポーネント内でuseSearchParamsを使っているためエラー発生 -> Suspenseを使ってエラーを回避する */}
-      <Suspense>
-        <Categories />
-      </Suspense>
+      <Categories />
     </div>
   )
 }

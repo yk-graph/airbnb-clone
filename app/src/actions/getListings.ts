@@ -13,7 +13,6 @@ export interface ListingsParams {
 
 // listingsのデータを取得する処理
 export default async function getListings(params: ListingsParams) {
-  // export default async function getListings() {
   try {
     const {
       userId,
