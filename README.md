@@ -47,10 +47,10 @@ NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET="<CloudinaryのUPLOAD_PRESETの値>"
 
 ```
 // prisma client の生成コマンド
-$ docker-compose exec app npx prisma generate
+$ docker compose exec app npx prisma generate
 
 // 初回のみ schema の内容を migration を生成せずにDBへ反映させる
-$ docker-compose exec app npx prisma db push
+$ docker compose exec app npx prisma db push
 ```
 
 4. 起動している開発サーバーにアクセス<br>http://localhost:3000
